@@ -35,13 +35,22 @@ function addTask(title, assignee) {
 }
 
 // Function to list all tasks
-function listTasks(doneOnly = false) {
+function listTasks(doneOnly = false, undoneOnly = false) {
     const todos = readTodos();
-    const filteredTodos = doneOnly ? todos.filter(todo => todo.done) : todos;
+    let filteredTodos = todos;
+    if (doneOnly) {
+        filteredTodos = todos.filter(todo => todo.done);
+    } else if (undoneOnly) {
+        filteredTodos = todos.filter(todo => !todo.done);
+    }
+
     if (filteredTodos.length === 0) {
         console.log('No tasks found.');
     } else {
-        const status = doneOnly ? 'Done' : 'All';
+        let status = 'All';
+        if (doneOnly) status = 'Done';
+        else if (undoneOnly) status = 'Undone';
+
         console.log(`${status} Tasks:`);
         filteredTodos.forEach(todo => {
             console.log(`ID: ${todo.id}, Title: ${todo.title}, Assignee: ${todo.assignee}, Done: ${todo.done ? 'Yes' : 'No'}`);
@@ -89,6 +98,8 @@ switch (command) {
     case 'list':
         if (args.includes('--done')) {
             listTasks(true);
+        } else if (args.includes('--undone')) {
+            listTasks(false, true);
         } else {
             listTasks();
         }
