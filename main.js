@@ -97,6 +97,19 @@ function deleteTask(id) {
     }
 }
 
+// Function to update a task
+function updateTask(id, title) {
+    const todos = readTodos();
+    const todoIndex = todos.findIndex(todo => todo.id === parseInt(id));
+    if (todoIndex === -1) {
+        console.log('Task not found.');
+    } else {
+        todos[todoIndex].title = title;
+        writeTodos(todos);
+        console.log('Task updated successfully.');
+    }
+}
+
 // Get assignee from environment variable or use "Unknown" if not set
 const assignee = process.env.TODO_USERNAME || 'Unknown';
 
@@ -125,6 +138,9 @@ switch (command) {
         break;
     case 'delete':
         deleteTask(args[0]);
+        break;
+    case 'update':
+        updateTask(args[0], args.slice(1).join(' '));
         break;
     default:
         listTasks();
