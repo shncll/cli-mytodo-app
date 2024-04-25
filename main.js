@@ -47,6 +47,19 @@ function listTasks() {
     }
 }
 
+// Function to mark a task as done
+function markTaskAsDone(id) {
+    const todos = readTodos();
+    const todoIndex = todos.findIndex(todo => todo.id === parseInt(id));
+    if (todoIndex === -1) {
+        console.log('Task not found.');
+    } else {
+        todos[todoIndex].done = true;
+        writeTodos(todos);
+        console.log('Task marked as done.');
+    }
+}
+
 // Get assignee from environment variable or use "Unknown" if not set
 const assignee = process.env.TODO_USERNAME || 'Unknown';
 
@@ -60,6 +73,9 @@ switch (command) {
         break;
     case 'list':
         listTasks();
+        break;
+    case 'done':
+        markTaskAsDone(args[0]);
         break;
     default:
         listTasks();
