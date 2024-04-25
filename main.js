@@ -34,6 +34,19 @@ function addTask(title, assignee) {
     console.log('Task added successfully!');
 }
 
+// Function to list all tasks
+function listTasks() {
+    const todos = readTodos();
+    if (todos.length === 0) {
+        console.log('No tasks found.');
+    } else {
+        console.log('All Tasks:');
+        todos.forEach(todo => {
+            console.log(`ID: ${todo.id}, Title: ${todo.title}, Assignee: ${todo.assignee}, Done: ${todo.done ? 'Yes' : 'No'}`);
+        });
+    }
+}
+
 // Get assignee from environment variable or use "Unknown" if not set
 const assignee = process.env.TODO_USERNAME || 'Unknown';
 
@@ -45,6 +58,9 @@ switch (command) {
     case 'add':
         addTask(args.join(' '), assignee);
         break;
+    case 'list':
+        listTasks();
+        break;
     default:
-        console.log('Invalid command. Usage: mytodo add "A sample task description"');
+        listTasks();
 }
