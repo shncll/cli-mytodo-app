@@ -60,6 +60,19 @@ function markTaskAsDone(id) {
     }
 }
 
+// Function to mark a task as undone
+function markTaskAsUndone(id) {
+    const todos = readTodos();
+    const todoIndex = todos.findIndex(todo => todo.id === parseInt(id));
+    if (todoIndex === -1) {
+        console.log('Task not found.');
+    } else {
+        todos[todoIndex].done = false;
+        writeTodos(todos);
+        console.log('Task marked as undone.');
+    }
+}
+
 // Get assignee from environment variable or use "Unknown" if not set
 const assignee = process.env.TODO_USERNAME || 'Unknown';
 
@@ -76,6 +89,9 @@ switch (command) {
         break;
     case 'done':
         markTaskAsDone(args[0]);
+        break;
+    case 'undone':
+        markTaskAsUndone(args[0]);
         break;
     default:
         listTasks();
