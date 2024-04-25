@@ -35,13 +35,15 @@ function addTask(title, assignee) {
 }
 
 // Function to list all tasks
-function listTasks() {
+function listTasks(doneOnly = false) {
     const todos = readTodos();
-    if (todos.length === 0) {
+    const filteredTodos = doneOnly ? todos.filter(todo => todo.done) : todos;
+    if (filteredTodos.length === 0) {
         console.log('No tasks found.');
     } else {
-        console.log('All Tasks:');
-        todos.forEach(todo => {
+        const status = doneOnly ? 'Done' : 'All';
+        console.log(`${status} Tasks:`);
+        filteredTodos.forEach(todo => {
             console.log(`ID: ${todo.id}, Title: ${todo.title}, Assignee: ${todo.assignee}, Done: ${todo.done ? 'Yes' : 'No'}`);
         });
     }
@@ -85,7 +87,11 @@ switch (command) {
         addTask(args.join(' '), assignee);
         break;
     case 'list':
-        listTasks();
+        if (args.includes('--done')) {
+            listTasks(true);
+        } else {
+            listTasks();
+        }
         break;
     case 'done':
         markTaskAsDone(args[0]);
