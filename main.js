@@ -84,6 +84,19 @@ function markTaskAsUndone(id) {
     }
 }
 
+// Function to delete a task
+function deleteTask(id) {
+    const todos = readTodos();
+    const todoIndex = todos.findIndex(todo => todo.id === parseInt(id));
+    if (todoIndex === -1) {
+        console.log('Task not found.');
+    } else {
+        todos.splice(todoIndex, 1);
+        writeTodos(todos);
+        console.log('Task deleted successfully.');
+    }
+}
+
 // Get assignee from environment variable or use "Unknown" if not set
 const assignee = process.env.TODO_USERNAME || 'Unknown';
 
@@ -109,6 +122,9 @@ switch (command) {
         break;
     case 'undone':
         markTaskAsUndone(args[0]);
+        break;
+    case 'delete':
+        deleteTask(args[0]);
         break;
     default:
         listTasks();
